@@ -14,7 +14,11 @@ async function bootstrap() {
             forbidNonWhitelisted: true,
 
             //converts primitive type into TS-required (@Param) and makes request body an instance of dto but slightly affects performance
-            // transform: true
+            transform: true,
+
+            transformOptions:{
+                enableImplicitConversion: true //no longer need to use types decorator
+            }
         })
     )
     await app.listen(3000);
