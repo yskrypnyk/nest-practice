@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import {TypeOrmModule} from "@nestjs/typeorm"; //enable database connection
-
+import {Constants} from './settings/consts'
 @Module({
   imports: [CoffeesModule, TypeOrmModule.forRoot({
     type:'postgres',
@@ -13,7 +13,8 @@ import {TypeOrmModule} from "@nestjs/typeorm"; //enable database connection
     password:'pass123',
     database:'postgres',
     autoLoadEntities: true,
-    synchronize: true //TODO - disable in production
+    //must be disabled in production
+    synchronize: Constants.IS_DEV
   })],
   controllers: [AppController],
   providers: [AppService],
