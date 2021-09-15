@@ -13,6 +13,9 @@ export class Coffee {
     @Column() //required
     brand: string
 
+    @Column({default : 0})
+    recommendations: number;
+
     @JoinTable() //specifies owner side of relationship
     @ManyToMany(
         type => Flavor, //foreign entity type
