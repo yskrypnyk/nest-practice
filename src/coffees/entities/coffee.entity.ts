@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable} from "typeorm";
+import {Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Flavor} from "./flavor.entity";
 
 // @Entity('coffees') // sql table === 'coffees'
@@ -16,7 +16,11 @@ export class Coffee {
     @JoinTable() //specifies owner side of relationship
     @ManyToMany(
         type => Flavor, //foreign entity type
-        (flavor) => flavor.coffees //foreign entity parameter
+        (flavor) => flavor.coffees, //foreign entity parameter
+        {
+            cascade: true // foreign entities, that do not exist, will be added to database
+            // cascade: ['insert'] // foreign entities, that do not exist, will be added to database
+        }
     )
-    flavors: string[]
+    flavors: Flavor[]
 }
