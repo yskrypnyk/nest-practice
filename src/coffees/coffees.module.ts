@@ -1,4 +1,4 @@
-import {Module} from '@nestjs/common';
+import {Injectable, Module} from '@nestjs/common';
 import {CoffeesController} from "./coffees.controller";
 import {CoffeesService} from "./coffees.service";
 import {TypeOrmModule} from "@nestjs/typeorm";
@@ -13,6 +13,13 @@ class ConfigService {}
 class DevelopmentConfigService {}
 class ProductionConfigService {}
 
+@Injectable()
+export class CoffeeBrandsFactory {
+    create() {
+        /* ... do something ... */
+        return ['buddy brew', 'nescafe']
+    }
+}
 
 @Module({
     imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])], //registering entities array
@@ -21,11 +28,22 @@ class ProductionConfigService {}
 
     providers: [
         CoffeesService,
+
         /** injectable variable */
         {
             provide: COFFEE_BRANDS, //injected in coffees.service (constructor)
             useValue: ['buddy brew', 'nescafe']
         },
+
+        /** injectable factory */
+        CoffeeBrandsFactory,
+        {
+            provide: COFFEE_BRANDS, //injected in coffees.service (constructor)
+            useFactory: (brandsFactory: CoffeeBrandsFactory) =>
+                brandsFactory.create(),
+            inject: [CoffeeBrandsFactory]
+        },
+
         /** dynamically determine classes based on env */
         {
             provide: ConfigService,
