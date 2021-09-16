@@ -5,16 +5,19 @@ import {Flavor} from "./flavor.entity";
 @Entity() // sql table === 'coffee'
 export class Coffee {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number
 
     @Column() //required
     name: string
+
+    @Column({nullable: true})
+    description: string
 
     @Column() //required
     brand: string
 
     @Column({default : 0})
-    recommendations: number;
+    recommendations: number
 
     @JoinTable() //specifies owner side of relationship
     @ManyToMany(
