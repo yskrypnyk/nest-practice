@@ -10,8 +10,13 @@ import {ConfigModule} from "@nestjs/config";
 
 @Module({
     imports: [
-        ConfigModule.forRoot(),
-        CoffeesModule,
+        /** local configuration module */
+        ConfigModule.forRoot({
+            ignoreEnvFile: !IS_DEV,
+            envFilePath: '.env'
+        }),
+
+        /** Database connection module */
         TypeOrmModule.forRoot({
             type: 'postgres',
             host: process.env.DATABASE_HOST,
@@ -23,8 +28,9 @@ import {ConfigModule} from "@nestjs/config";
             //must be disabled in production
             synchronize: IS_DEV
         }),
+        DatabaseModule,
+        CoffeesModule,
         CoffeeRatingModule,
-        DatabaseModule
     ],
     controllers: [AppController],
     providers: [AppService],
