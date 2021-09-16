@@ -3,7 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import {TypeOrmModule} from "@nestjs/typeorm"; //enable database connection
-import {Constants} from './settings/consts'
+import {IS_DEV} from './constants/consts'
+import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 @Module({
   imports: [CoffeesModule, TypeOrmModule.forRoot({
     type:'postgres',
@@ -14,8 +15,8 @@ import {Constants} from './settings/consts'
     database:'postgres',
     autoLoadEntities: true,
     //must be disabled in production
-    synchronize: Constants.IS_DEV
-  })],
+    synchronize: IS_DEV
+  }), CoffeeRatingModule],
   controllers: [AppController],
   providers: [AppService],
 })
