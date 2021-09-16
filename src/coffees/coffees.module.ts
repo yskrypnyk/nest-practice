@@ -7,25 +7,35 @@ import {Flavor} from "./entities/flavor.entity";
 import {Event} from "../events/entities/event.entity";
 import {COFFEE_BRANDS} from "./coffees.constants";
 
-class MockCoffeesService {
-}
+class MockCoffeesService {}
+
+class ConfigService {}
+class DevelopmentConfigService {}
+class ProductionConfigService {}
+
 
 @Module({
     imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])], //registering entities array
+
     controllers: [CoffeesController],
+
     providers: [
         CoffeesService,
+        /** injectable variable */
         {
             provide: COFFEE_BRANDS, //injected in coffees.service (constructor)
             useValue: ['buddy brew', 'nescafe']
-        }
+        },
+        /** dynamically determine classes based on env */
+        {
+            provide: ConfigService,
+            useClass: process.env.NODE_ENV === 'development' ? DevelopmentConfigService : ProductionConfigService
+        },
     ],
-    exports: [CoffeesService], //this service is used in another service (coffee-rating), therefore must be exported from module
-    // if you want to use another class when module is requested
-    // providers: [{
-    //     provide: CoffeesService,
-    //     useValue: new MockCoffeesService()
-    // }],
+
+    /** injectable service must be exported in order to be used */
+    //this service is used in the constructor of coffee-rating service
+    exports: [CoffeesService],
 })
 export class CoffeesModule {
 }
