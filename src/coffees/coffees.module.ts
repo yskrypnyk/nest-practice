@@ -6,13 +6,18 @@ import {Coffee} from "./entities/coffee.entity";
 import {Flavor} from "./entities/flavor.entity";
 import {Event} from "../events/entities/event.entity";
 import {COFFEE_BRANDS} from "./coffees.constants";
+import {Connection} from "typeorm";
 
-class MockCoffeesService {}
+class ConfigService {
+}
 
-class ConfigService {}
-class DevelopmentConfigService {}
-class ProductionConfigService {}
+class DevelopmentConfigService {
+}
 
+class ProductionConfigService {
+}
+
+/** factory */
 @Injectable()
 export class CoffeeBrandsFactory {
     create() {
@@ -37,11 +42,22 @@ export class CoffeeBrandsFactory {
 
         /** injectable factory */
         CoffeeBrandsFactory,
+        //Synchronous
         {
             provide: COFFEE_BRANDS, //injected in coffees.service (constructor)
             useFactory: (brandsFactory: CoffeeBrandsFactory) =>
                 brandsFactory.create(),
             inject: [CoffeeBrandsFactory]
+        },
+        //Asynchronous
+        {
+            provide: COFFEE_BRANDS, //injected in coffees.service (constructor)
+            useFactory: async (connection: Connection): Promise<string[]> => {
+                //const coffeeBrands = await connection.query('SELECT * ...');
+                const coffeeBrands = await Promise.resolve(['buddy brew', 'nescafe'])
+                return coffeeBrands
+            },
+            inject: [Connection]
         },
 
         /** dynamically determine classes based on env */
