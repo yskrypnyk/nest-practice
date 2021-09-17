@@ -8,17 +8,19 @@ import {CoffeeRatingModule} from './coffee-rating/coffee-rating.module'; //secon
 import {DatabaseModule} from './database/database.module'; //module that can be used to connect to database
 import {ConfigModule} from "@nestjs/config"; //add env file as variable
 import * as Joi from "@hapi/joi"; //validation for env file variables
+import appConfig from './config/app.config'
 
 @Module({
     imports: [
         /** local configuration module */
         ConfigModule.forRoot({
-            ignoreEnvFile: !IS_DEV,
-            envFilePath: '.env',
+            ignoreEnvFile: !IS_DEV, //makes env file non required
+            envFilePath: '.env',//specified env file path
             validationSchema: Joi.object({
                 DATABASE_HOST: Joi.required(),
                 DATABASE_PORT: Joi.number().default(5432)
-            }) //validates env files
+            }), //validates env files
+            load: [appConfig], //adding a custom config file
         }),
 
         /** Database connection module */

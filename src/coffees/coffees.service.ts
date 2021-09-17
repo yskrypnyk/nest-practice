@@ -25,8 +25,8 @@ export class CoffeesService {
     ) {
         /** Retrieving a service configuration*/
         const databaseHost = this.configService.get<string>(
-            'DATABASE_HOST',
-            'localhost'
+            'database.host', //value from app.config.ts object
+            'localhost' // default value
         )
         console.log(databaseHost)
     }
