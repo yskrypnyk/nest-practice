@@ -7,6 +7,7 @@ import {Flavor} from "./entities/flavor.entity";
 import {Event} from "../events/entities/event.entity";
 import {COFFEE_BRANDS} from "./coffees.constants";
 import {Connection} from "typeorm";
+import {ConfigModule} from "@nestjs/config";
 
 class ConfigService {
 }
@@ -27,19 +28,26 @@ export class CoffeeBrandsFactory {
 }
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])], //registering entities array
+    imports: [
+        //registering entities array
+        TypeOrmModule.forFeature([
+            Coffee,
+            Flavor,
+            Event
+        ]),
+        //module configuration
+        ConfigModule
+    ],
 
     controllers: [CoffeesController],
 
     providers: [
         CoffeesService,
-
         /** injectable variable */
         {
             provide: COFFEE_BRANDS, //injected in coffees.service (constructor)
             useValue: ['buddy brew', 'nescafe']
         },
-
         /** injectable factory */
         CoffeeBrandsFactory,
         //Synchronous
