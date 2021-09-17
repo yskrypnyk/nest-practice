@@ -28,9 +28,6 @@ async function bootstrap() {
     //use HttpExceptionFilter filter
     app.useGlobalFilters(new HttpExceptionFilter())
 
-    //use guard
-    app.useGlobalGuards(new ApiKeyGuard())
-
     await app.listen(3000);
 }
 

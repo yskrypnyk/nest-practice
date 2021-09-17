@@ -8,7 +8,7 @@ import {
     Param,
     Patch,
     Post,
-    Query,
+    Query, SetMetadata,
     UsePipes,
     ValidationPipe
 } from '@nestjs/common';
@@ -16,6 +16,7 @@ import {CoffeesService} from "./coffees.service";
 import {CreateCoffeeDto} from "./dto/create-coffee.dto";
 import {UpdateCoffeeDto} from "./dto/update-coffee.dto";
 import {PaginationQueryDto} from "../common/dto/pagination-query.dto";
+import {Public} from "../common/decorators/public.decorator";
 
 /** injecting a pipe into controller */
 //@UsePipes(ValidationPipe)
@@ -33,6 +34,11 @@ export class CoffeesController {
     //http://localhost:3000/coffees?limit=20&offset=0
     /** injecting a pipe into single route */
     @UsePipes(ValidationPipe)
+    /** adding custom metadata */
+    //default
+    // @SetMetadata('isPublic', true)
+    //using custom decorators
+    @Public()
     @Get()
     findAll(@Query() paginationQuery: PaginationQueryDto) {
         return this.coffeesService.findAll(paginationQuery)

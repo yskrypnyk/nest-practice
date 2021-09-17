@@ -10,6 +10,7 @@ import {ConfigModule} from "@nestjs/config"; //add env file as variable
 import * as Joi from "@hapi/joi"; //validation for env file variables
 import appConfig from './config/app.config'
 import {APP_PIPE} from "@nestjs/core";
+import { CommonModule } from './common/common.module';
 
 @Module({
     imports: [
@@ -57,6 +58,7 @@ import {APP_PIPE} from "@nestjs/core";
         DatabaseModule,
         CoffeesModule,
         CoffeeRatingModule,
+        CommonModule,
     ],
     controllers: [AppController],
     providers: [
