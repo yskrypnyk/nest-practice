@@ -1,4 +1,4 @@
-import {Module} from '@nestjs/common';
+import {Module, ValidationPipe} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {CoffeesModule} from './coffees/coffees.module'; //main coffee module
@@ -9,6 +9,7 @@ import {DatabaseModule} from './database/database.module'; //module that can be 
 import {ConfigModule} from "@nestjs/config"; //add env file as variable
 import * as Joi from "@hapi/joi"; //validation for env file variables
 import appConfig from './config/app.config'
+import {APP_PIPE} from "@nestjs/core";
 
 @Module({
     imports: [
@@ -58,7 +59,15 @@ import appConfig from './config/app.config'
         CoffeeRatingModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+
+        /** Registering a global pipe */
+        // {
+        //     provide: APP_PIPE, //token from nest.js core
+        //     useValue: ValidationPipe //Now ValidationPipe is in scope of app module
+        // }
+    ],
 })
 export class AppModule {
 }
