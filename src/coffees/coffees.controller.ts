@@ -30,12 +30,6 @@ export class CoffeesController {
      * GET - returns entity
      */
 
-    //http://localhost:3000/coffees
-    // @Get()
-    // findAll(): string{
-    //     return 'This function returns all coffees';
-    // }
-
     //http://localhost:3000/coffees?limit=20&offset=0
     /** injecting a pipe into single route */
     @UsePipes(ValidationPipe)
@@ -90,8 +84,4 @@ export class CoffeesController {
     remove(@Param('id') id: string) {
         return this.coffeesService.remove(id)
     }
-
-    /**
-     * PUT - updates whole entity
-     */
 }
