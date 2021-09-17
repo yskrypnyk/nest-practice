@@ -40,7 +40,9 @@ export class CoffeesController {
     //using custom decorators
     @Public()
     @Get()
-    findAll(@Query() paginationQuery: PaginationQueryDto) {
+    async findAll(@Query() paginationQuery: PaginationQueryDto) {
+        //for timeout interceptor
+        // await new Promise(resolve => setTimeout(resolve,5000))
         return this.coffeesService.findAll(paginationQuery)
     }
 
