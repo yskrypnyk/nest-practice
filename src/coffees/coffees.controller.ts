@@ -18,9 +18,12 @@ import {UpdateCoffeeDto} from "./dto/update-coffee.dto";
 import {PaginationQueryDto} from "../common/dto/pagination-query.dto";
 import {Public} from "../common/decorators/public.decorator";
 import {ParseIntPipe} from "../common/pipes/parse-int.pipe";
+import {ApiResponse, ApiTags} from "@nestjs/swagger";
 
 /** injecting a pipe into controller */
 //@UsePipes(ValidationPipe)
+/** for swagger grouping */
+@ApiTags('coffees')
 @Controller('coffees')
 export class CoffeesController {
 
@@ -33,6 +36,8 @@ export class CoffeesController {
      */
 
     //http://localhost:3000/coffees?limit=20&offset=0
+    /** additional responses for swagger*/
+    @ApiResponse({status:403, description:'Forbidden.'})
     /** injecting a pipe into single route */
     @UsePipes(ValidationPipe)
     /** adding custom metadata */

@@ -2,9 +2,9 @@ import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {ValidationPipe} from "@nestjs/common";
 import {HttpExceptionFilter} from "./common/filter/http-exception.filter";
-import {ApiKeyGuard} from "./common/guards/api-key.guard";
 import {WrapResponseInterceptor} from "./common/interceptors/wrap-response.interceptor";
 import {TimeoutInterceptor} from "./common/interceptors/timeout.interceptor";
+import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -21,7 +21,7 @@ async function bootstrap() {
             //converts primitive type into TS-required (@Param) and makes request body an instance of dto but slightly affects performance
             transform: true,
 
-            transformOptions:{
+            transformOptions: {
                 enableImplicitConversion: true //no longer need to use types decorator
             }
         })
@@ -34,6 +34,17 @@ async function bootstrap() {
         new WrapResponseInterceptor(),
         new TimeoutInterceptor()
     );
+
+    /**
+     * Swagger
+     */
+    const options = new DocumentBuilder()
+        .setTitle('Coffee')
+        .setDescription('Coffee app')
+        .setVersion('1.0')
+        .build()
+    const document = SwaggerModule.createDocument(app, options)
+    SwaggerModule.setup('api', app, document)
 
     await app.listen(3000);
 }
