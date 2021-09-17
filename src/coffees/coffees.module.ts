@@ -8,6 +8,7 @@ import {Event} from "../events/entities/event.entity";
 import {COFFEE_BRANDS} from "./coffees.constants";
 import {Connection} from "typeorm";
 import {ConfigModule} from "@nestjs/config";
+import coffeesConfig from  './config/coffees.config'
 
 class ConfigService {
 }
@@ -35,8 +36,12 @@ export class CoffeeBrandsFactory {
             Flavor,
             Event
         ]),
-        //module configuration
-        ConfigModule
+        /** module configuration injection */
+        //global
+        ConfigModule,//
+
+        //partial
+        ConfigModule.forFeature(coffeesConfig)
     ],
 
     controllers: [CoffeesController],

@@ -8,27 +8,62 @@ import {Flavor} from "./entities/flavor.entity";
 import {PaginationQueryDto} from "../common/dto/pagination-query.dto";
 import {Event} from "../events/entities/event.entity";
 import {COFFEE_BRANDS} from "./coffees.constants";
-import {ConfigService} from "@nestjs/config"; //provides a get method for reading configuration variables from env
+import {ConfigService, ConfigType} from "@nestjs/config"; //provides a get method for reading configuration variables from env
+import coffeesConfig from './config/coffees.config'
 
 @Injectable()
 export class CoffeesService {
 
     constructor(
+        /**
+         * Database connection
+         */
         @InjectRepository(Coffee)  //database entity connection
         private readonly coffeeRepository: Repository<Coffee>,
+
         @InjectRepository(Flavor)  //database entity connection
         private readonly flavorRepository: Repository<Flavor>,
+
         private readonly connection: Connection,  //database query connection
+
+        /**
+         * Config files
+         */
+        // has method to retrieve config files
         private readonly configService: ConfigService,
 
-        @Inject(COFFEE_BRANDS) coffeeBrands: string[]
+        // injecting a config file
+        @Inject(coffeesConfig.KEY)
+        private readonly coffeesConfiguration: ConfigType<typeof coffeesConfig>,
+
+        /**
+         * Injectable variables from module
+         */
+        @Inject(COFFEE_BRANDS) coffeeBrands: string[],
     ) {
-        /** Retrieving a service configuration*/
-        const databaseHost = this.configService.get<string>(
+        /**
+         * Injectable variables usage
+         */
+        console.log(coffeeBrands)
+
+        /**
+         * Config examples
+         */
+
+        //Retrieving a global service configuration (app.config)
+        const globalConfig = this.configService.get<string>(
             'database.host', //value from app.config.ts object
             'localhost' // default value
         )
-        console.log(databaseHost)
+        console.log(globalConfig)
+
+        // Retrieving a partial module configuration (coffees.config)
+        const retrievedConfig = this.configService.get<string>('coffees.foo')
+        console.log(retrievedConfig)
+
+        /** BEST PRACTICE */
+        // Retrieving an injected config properties
+        console.log(coffeesConfiguration.foo)
     }
 
     findAll(paginationQuery: PaginationQueryDto){
