@@ -12,6 +12,23 @@ import appConfig from './config/app.config'
 
 @Module({
     imports: [
+
+        /** Asynchronous Database connection module (MUST BE PLACED AFTER CONFIG)*/
+        //this will be loaded AFTER every other module in app is resolved
+        TypeOrmModule.forRootAsync({
+            useFactory: () => ({
+                type: 'postgres',
+                host: process.env.DATABASE_HOST,
+                port: +process.env.DATABASE_PORT,
+                username: process.env.DATABASE_USER,
+                password: process.env.DATABASE_PASSWORD,
+                database: process.env.DATABASE_NAME,
+                autoLoadEntities: true,
+                //must be disabled in production
+                synchronize: IS_DEV
+            })
+        }),
+
         /** local configuration module */
         ConfigModule.forRoot({
             ignoreEnvFile: !IS_DEV, //makes env file non required
@@ -23,18 +40,19 @@ import appConfig from './config/app.config'
             load: [appConfig], //adding a custom config file
         }),
 
-        /** Database connection module */
-        TypeOrmModule.forRoot({
-            type: 'postgres',
-            host: process.env.DATABASE_HOST,
-            port: +process.env.DATABASE_PORT,
-            username: process.env.DATABASE_USER,
-            password: process.env.DATABASE_PASSWORD,
-            database: process.env.DATABASE_NAME,
-            autoLoadEntities: true,
-            //must be disabled in production
-            synchronize: IS_DEV
-        }),
+        /** Synchronous Database connection module (MUST BE PLACED AFTER CONFIG)*/
+        // TypeOrmModule.forRoot({
+        //     type: 'postgres',
+        //     host: process.env.DATABASE_HOST,
+        //     port: +process.env.DATABASE_PORT,
+        //     username: process.env.DATABASE_USER,
+        //     password: process.env.DATABASE_PASSWORD,
+        //     database: process.env.DATABASE_NAME,
+        //     autoLoadEntities: true,
+        //     //must be disabled in production
+        //     synchronize: IS_DEV
+        // }),
+
         DatabaseModule,
         CoffeesModule,
         CoffeeRatingModule,

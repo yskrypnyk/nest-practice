@@ -38,7 +38,7 @@ export class CoffeeBrandsFactory {
         ]),
         /** module configuration injection */
         //global
-        ConfigModule,//
+        ConfigModule,
 
         //partial
         ConfigModule.forFeature(coffeesConfig)
