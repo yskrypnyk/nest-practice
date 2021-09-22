@@ -1,4 +1,4 @@
-import {Module, ValidationPipe} from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {CoffeesModule} from './coffees/coffees.module'; //main coffee module
@@ -9,8 +9,7 @@ import {DatabaseModule} from './database/database.module'; //module that can be 
 import {ConfigModule} from "@nestjs/config"; //add env file as variable
 import * as Joi from "@hapi/joi"; //validation for env file variables
 import appConfig from './config/app.config'
-import {APP_PIPE} from "@nestjs/core";
-import { CommonModule } from './common/common.module';
+import {CommonModule} from './common/common.module';
 
 @Module({
     imports: [

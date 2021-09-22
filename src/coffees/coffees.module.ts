@@ -37,6 +37,7 @@ export class CoffeeBrandsFactory {
             Event
         ]),
         /** module configuration injection */
+
         //global
         ConfigModule,
 

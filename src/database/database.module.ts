@@ -16,7 +16,7 @@ import {ConnectionOptions, createConnection} from "typeorm";
 })
 
 export class DatabaseModule {
-    /** Dynamic connection imp;ementation */
+    /** Dynamic connection implementation */
     static register(options: ConnectionOptions): DynamicModule {
         return {
             module: DatabaseModule,
