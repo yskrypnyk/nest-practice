@@ -10,7 +10,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     //use validation pipe
-    app.useGlobalPipes(
+    app.useGlobalPipes(//
         new ValidationPipe({
             //unwanted properties of passed data from client is striped and removed (workflow continues)
             whitelist: true,

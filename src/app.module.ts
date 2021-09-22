@@ -14,7 +14,7 @@ import {CommonModule} from './common/common.module';
 @Module({
     imports: [
 
-        /** Asynchronous Database connection module (MUST BE PLACED AFTER CONFIG)*/
+        /** Asynchronous Database connection module */
         //this will be loaded AFTER every other module in app is resolved
         TypeOrmModule.forRootAsync({
             useFactory: () => ({

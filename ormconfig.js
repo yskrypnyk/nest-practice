@@ -1,3 +1,4 @@
+//Needed for migrations
 module.exports = {
     type:'postgres',
     host:'localhost',
